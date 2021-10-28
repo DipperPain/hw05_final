@@ -39,7 +39,7 @@ class PostPagesTests(TestCase):
                 'posts:group_list', kwargs={'slug': 'test-slug'}
             ): 'posts/group_list.html',
             reverse(
-                'posts:/profile/', kwargs={'username': f'{self.user.username}'}
+                'posts:profile', kwargs={'username': f'{self.user.username}'}
             ): 'posts/profile.html',
             reverse(
                 'posts:post_detail', kwargs={'post_id': f'{self.post_test.id}'}
@@ -111,7 +111,7 @@ class PostContextTests(TestCase):
         """Шаблон group_list сформирован с правильным контекстом."""
         response = self.authorized_client.get(
             reverse(
-                'posts:/profile/',
+                'posts:profile',
                 kwargs={'username': f'{self.user.username}'}
             )
         )
@@ -227,7 +227,7 @@ class PaginatorViewsTest(TestCase):
     def test_first_page_user(self):
         response = self.authorized_client.get(
             reverse(
-                'posts:/profile/', kwargs={'username': f'{self.user.username}'}
+                'posts:profile', kwargs={'username': f'{self.user.username}'}
             )
         )
         # Проверка: количество постов на первой странице равно 10
@@ -237,7 +237,7 @@ class PaginatorViewsTest(TestCase):
         # Проверка: на второй странице должно быть три поста.
         response = self.authorized_client.get(
             reverse(
-                'posts:/profile/', kwargs={'username': f'{self.user.username}'}
+                'posts:profile', kwargs={'username': f'{self.user.username}'}
             ) + '?page=2'
         )
         self.assertEqual(len(response.context['page_obj']), 3)

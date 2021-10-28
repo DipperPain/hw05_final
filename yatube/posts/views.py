@@ -99,7 +99,7 @@ def post_create(request):
         post.author = request.user
         post.save()
         return redirect(reverse(
-            'posts:/profile/', kwargs={'username': f'{author_user}'})
+            'posts:profile', kwargs={'username': f'{author_user}'})
         )
     context = {'form': form}
     return render(request, 'posts/post_create.html', context)
@@ -173,7 +173,7 @@ def profile_follow(request, username):
         user=user_follow,
         author=author_follow
     )
-    return redirect('posts:/profile/', username=username)
+    return redirect('posts:profile', username=username)
 
 
 @login_required
@@ -185,4 +185,4 @@ def profile_unfollow(request, username):
         Follow, author=author_follow.pk, user=user_follow.pk
     )
     follow.delete()
-    return redirect('posts:/profile/', username=username)
+    return redirect('posts:profile', username=username)

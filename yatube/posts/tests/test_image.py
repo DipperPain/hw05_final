@@ -125,7 +125,7 @@ class TaskCreateFormTests(TestCase):
         )
         response = self.authorized_client.get(
             reverse(
-                'posts:/profile/',
+                'posts:profile',
                 kwargs={'username': f'{self.user.username}'}
             )
         )

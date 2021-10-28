@@ -51,7 +51,7 @@ class PostURLTests(TestCase):
                 'posts:group_list', kwargs={'slug': 'test-slug'}
             ): 'posts/group_list.html',
             reverse(
-                'posts:/profile/', kwargs={'username': 'test'}
+                'posts:profile', kwargs={'username': 'test'}
             ): 'posts/profile.html',
             reverse(
                 'posts:post_detail', kwargs={'post_id': f'{self.post_test.id}'}
