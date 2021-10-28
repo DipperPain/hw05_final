@@ -170,7 +170,12 @@ def profile_follow(request, username):
 
     author_follow = get_object_or_404(User, username=username)
     user_follow = get_object_or_404(User, username=request.user)
-    if author_follow != user_follow:
+    count_follow = Follow.objects.filter(
+        user=user_follow,
+        author=author_follow
+    ).count()
+
+    if author_follow != user_follow and count_follow == 0:
         Follow.objects.create(
             user=user_follow,
             author=author_follow
