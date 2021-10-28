@@ -19,8 +19,6 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 
-
-
 urlpatterns = [
     path('', include('posts.urls', namespace='posts')),
     path('about/', include('about.urls', namespace='about')),
