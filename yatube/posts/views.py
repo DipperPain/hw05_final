@@ -71,7 +71,6 @@ def profile(request, username):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     post_comments = post.comments.all()
-    form_comment = CommentForm
     user = request.user
     username = post.author
     number_posts = username.posts.count()
@@ -83,7 +82,7 @@ def post_detail(request, post_id):
         'user': user,
         'username': username,
         'comments': post_comments,
-        'form_comment': form_comment
+        'form_comment': CommentForm
 
     }
     return render(request, 'posts/post_detail.html', context)
