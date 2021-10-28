@@ -48,15 +48,17 @@ def profile(request, username):
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    user_follow = get_object_or_404(User, username=request.user.username)
-    author_follow = get_object_or_404(User, username=username)
-    number_follow = Follow.objects.filter(
-        author=author_follow, user=user_follow
-    ).count()
-    if number_follow == 1:
-        follow = 'following'
-    else:
-        follow = None
+    author_follow = User.objects.get(username=username)
+    follow = None
+    if request.user in User.objects.all():
+        user_follow = User.objects.get(username=request.user)
+        number_follow = Follow.objects.filter(
+            author=author_follow, user=user_follow
+        ).count()
+        if number_follow == 1:
+            follow = 'following'
+        else:
+            follow = None
     context = {
         'page_obj': page_obj,
         'number_posts': number_posts,
@@ -168,11 +170,12 @@ def profile_follow(request, username):
     # Подписаться на автора
 
     author_follow = get_object_or_404(User, username=username)
-    user_follow = get_object_or_404(User, username=request.user.username)
-    Follow.objects.create(
-        user=user_follow,
-        author=author_follow
-    )
+    user_follow = get_object_or_404(User, username=request.user)
+    if author_follow != user_follow:
+        Follow.objects.create(
+            user=user_follow,
+            author=author_follow
+        )
     return redirect('posts:profile', username=username)
 
 
