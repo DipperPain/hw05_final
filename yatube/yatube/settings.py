@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -23,22 +23,16 @@ CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 SECRET_KEY = '3*a)%ltn9goyo+++vu(gd%!1eidvayhz2^h4&lh*^gorv=*d(1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-    'testserver',
+    '*'
 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'core',
-    'posts',
-    'about',
     'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'core',
+    'posts',
+    'about',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'yatube.urls'
 
@@ -142,3 +140,4 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'

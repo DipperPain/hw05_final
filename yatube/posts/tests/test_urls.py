@@ -84,7 +84,7 @@ class PostURLTests(TestCase):
 
     def test_unexist(self):
         """Страница /недоступна любому пользователю."""
-        response = self.guest_client.get('unexisting_page/')
+        response = self.guest_client.get('/unexisting_page/')
         self.assertEqual(response.status_code, 404)
 
     def test_url_guest_create(self):
@@ -109,7 +109,7 @@ class PostURLTests(TestCase):
 
     def test_unexist_test(self):
         """Страница /недоступна любому пользователю."""
-        response = self.authorized_client.get('unexisting_page/')
+        response = self.authorized_client.get('/unexisting_page/')
         self.assertEqual(response.status_code, 404)
 
     def test_guest_comment_recive(self):
