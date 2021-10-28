@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}<title>Об авторе проекта</title>{% endblock %}
+{% block content %}
+<h1>Привет, я автор</h1>
+<div class="container">
+  <ul>
+    <p> 
+      <a href = 'https://github.com/DipperPain'> 
+          Cсылка на мой github  
+      </a>
+    </p>
+    <p>
+    <a> Мой рыжий и пушистый  помощник на фото ниже😼</a>
+    </p>
+    <p>
+    <div>
+      <img src="{% static 'img/leo.png' %}" width="300" height="300" alt="Мой котик Лео">
+  </ul>
+</div>  
+
+</p>
+{% endblock %} 
