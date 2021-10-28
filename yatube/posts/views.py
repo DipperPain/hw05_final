@@ -73,6 +73,7 @@ def post_detail(request, post_id):
     post_comments = post.comments.all()
     user = request.user
     username = post.author
+    form_comment = CommentForm
     number_posts = username.posts.count()
     post_title = post.text[0:29]
     context = {
@@ -82,7 +83,7 @@ def post_detail(request, post_id):
         'user': user,
         'username': username,
         'comments': post_comments,
-        'form_comment': CommentForm
+        'form_comment': form_comment,
 
     }
     return render(request, 'posts/post_detail.html', context)
