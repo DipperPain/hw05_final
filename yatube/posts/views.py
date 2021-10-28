@@ -70,7 +70,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    post_comments = post.comments.all()
+    comments = post.comments.all()
     user = request.user
     username = post.author
     form_comment = CommentForm
@@ -82,7 +82,7 @@ def post_detail(request, post_id):
         'number_posts': number_posts,
         'user': user,
         'username': username,
-        'comments': post_comments,
+        'comments': comments,
         'form_comment': form_comment,
 
     }
