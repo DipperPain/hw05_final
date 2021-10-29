@@ -59,7 +59,9 @@ class PostURLTests(TestCase):
             reverse(
                 'posts:post_edit', kwargs={'post_id': f'{self.post_test.id}'}
             ): 'posts/post_create.html',
-            '/create/': 'posts/post_create.html',
+            reverse(
+                'posts:post_create'
+            ): 'posts/post_create.html',
         }
 
         templates_url_names_noname = {
@@ -122,7 +124,7 @@ class PostURLTests(TestCase):
             follow=True
         )
         self.assertRedirects(
-            response, f'/auth/login/?next=/posts/{self.post_test.id}/comment'
+            response, f'/auth/login/?next=/posts/{self.post_test.id}/comment/'
         )
 
     def test_form_comment(self):

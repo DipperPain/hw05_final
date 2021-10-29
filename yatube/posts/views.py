@@ -48,17 +48,14 @@ def profile(request, username):
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    author_follow = User.objects.get(username=username)
     follow = None
-    if request.user in User.objects.all():
-        user_follow = User.objects.get(username=request.user)
-        number_follow = Follow.objects.filter(
-            author=author_follow, user=user_follow
-        ).count()
-        if number_follow == 1:
-            follow = 'following'
-        else:
-            follow = None
+    follow_exist = Follow.objects.filter(
+        author=author, user=request.user
+    ).exists()
+    if follow_exist:
+        follow = 'following'
+    else:
+        follow = None
     context = {
         'page_obj': page_obj,
         'number_posts': number_posts,
@@ -144,12 +141,7 @@ def add_comment(request, post_id):
 @login_required
 def follow_index(request):
     # информация о текущем пользователе доступна в переменной request.user
-    user_obj = get_object_or_404(User, username=request.user.username)
-    print(request.user.username)
-    user_following = user_obj.follower.all()
-    print(user_following)
-    authors = User.objects.filter(following__in=user_following)
-    posts = Post.objects.filter(author__in=authors)
+    posts = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(posts, 10)
 
     # Из URL извлекаем номер запрошенной страницы - это значение параметра page
@@ -170,15 +162,9 @@ def profile_follow(request, username):
     # Подписаться на автора
 
     author_follow = get_object_or_404(User, username=username)
-    user_follow = get_object_or_404(User, username=request.user)
-    count_follow = Follow.objects.filter(
-        user=user_follow,
-        author=author_follow
-    ).count()
-
-    if author_follow != user_follow and count_follow == 0:
-        Follow.objects.create(
-            user=user_follow,
+    if author_follow != request.user:
+        Follow.objects.get_or_create(
+            user=request.user,
             author=author_follow
         )
     return redirect('posts:profile', username=username)
@@ -187,10 +173,9 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     # Дизлайк, отписка
-    user_follow = get_object_or_404(User, username=request.user.username)
     author_follow = get_object_or_404(User, username=username)
-    follow = get_object_or_404(
-        Follow, author=author_follow.pk, user=user_follow.pk
+    follow = Follow.objects.filter(
+        author__username=author_follow.username, user=request.user
     )
     follow.delete()
     return redirect('posts:profile', username=username)
