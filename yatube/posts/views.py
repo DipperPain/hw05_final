@@ -41,16 +41,17 @@ def index(request):
     return render(request, 'posts/index.html', context)
 
 
+@login_required
 def profile(request, username):
-    author = get_object_or_404(User, username=username)
-    number_posts = author.posts.count()
-    post_list = author.posts.all()
+    author_follow = get_object_or_404(User, username=username)
+    number_posts = author_follow.posts.count()
+    post_list = author_follow.posts.all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     follow = None
     follow_exist = Follow.objects.filter(
-        author=author, user=request.user
+        author=author_follow, user=request.user
     ).exists()
     if follow_exist:
         follow = 'following'
@@ -59,7 +60,7 @@ def profile(request, username):
     context = {
         'page_obj': page_obj,
         'number_posts': number_posts,
-        'author': author,
+        'author': author_follow,
         'following': follow
     }
     return render(request, 'posts/profile.html', context)
