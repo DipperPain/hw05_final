@@ -41,26 +41,27 @@ def index(request):
     return render(request, 'posts/index.html', context)
 
 
-@login_required
 def profile(request, username):
-    author_follow = get_object_or_404(User, username=username)
-    number_posts = author_follow.posts.count()
-    post_list = author_follow.posts.all()
+    author = get_object_or_404(User, username=username)
+    number_posts = author.posts.count()
+    post_list = author.posts.all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    author_follow = User.objects.get(username=username)
     follow = None
-    follow_exist = Follow.objects.filter(
-        author=author_follow, user=request.user
-    ).exists()
-    if follow_exist:
-        follow = 'following'
-    else:
-        follow = None
+    if request.user.is_authenticated:
+        follow_exist = Follow.objects.filter(
+            author=author_follow, user=request.user
+        ).exists()
+        if follow_exist:
+            follow = 'following'
+        else:
+            follow = None
     context = {
         'page_obj': page_obj,
         'number_posts': number_posts,
-        'author': author_follow,
+        'author': author,
         'following': follow
     }
     return render(request, 'posts/profile.html', context)
